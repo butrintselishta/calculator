@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Illuminate\Validation\UnauthorizedException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -24,7 +26,9 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            //
+            if($e instanceof UnauthorizedException) {
+                return response()->error('Unauthorized', Response::HTTP_UNAUTHORIZED);
+            }
         });
     }
 }
