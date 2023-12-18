@@ -16,8 +16,6 @@ export default {
         Login,
         Calculator,
     },
-    data() {
-    },
 }
 </script>
 
