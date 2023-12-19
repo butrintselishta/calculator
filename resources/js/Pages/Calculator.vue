@@ -72,12 +72,14 @@ export default {
             this.displayValue = '';
         },
         async calculateResult() {
-            // console.log(eval(this.displayValue).toString());
             try {
                 const { data, status } = await ApiClient.PostCalculation(this.displayValue)
-                // this.displayValue = eval(this.displayValue).toString();
+                if (status === 200) {
+                    console.log(data.data);
+                    this.displayValue = data.data;
+                }
             } catch (error) {
-                this.displayValue = 'Error';
+                this.displayValue = 'N/A';
             }
         },
     },
