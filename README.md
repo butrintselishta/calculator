@@ -25,7 +25,7 @@ To set up the project on your **local machine**, follow these steps:
 
 1. Clone the repository from Github:
 ```bash
-git clone git@github.com:butrintselishta/calculator.git
+git clone https://github.com/butrintselishta/calculator.git
 ```
 <br/>
 
@@ -63,6 +63,13 @@ cp .env.example .env
 And then create the database in your database manger (MySQL).
 ##### NOTE about ***.env***
 > This file contains all the configuration settings for your application. While it comes preloaded with default configurations, you may need to modify or append certain values to match your specific environment. For instance, **DB_DATABASE** relies on your MySQL database name choice, so ensure alignment accordingly.
+
+<br/>
+
+6. Generate the application key:
+```bash
+php artisan key:generate
+```
 
 <br/>
 
