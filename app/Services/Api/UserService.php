@@ -11,9 +11,18 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class UserService
 {
     /**
+     * Get authenticated user
+     * @return User
+     */
+    private function getAuthenticatedUser(): User
+    {
+        return auth()->user();
+    }
+
+    /**
      * Find user by email
      * @param string $email
-     * @return JsonResponse
+     * @return User|JsonResponse
      */
     public function getByEmail(string $email): User|JsonResponse
     {
@@ -23,5 +32,20 @@ class UserService
         }
 
         return $user;
+    }
+
+    /**
+     * Store calculations to track the user
+     * @param string $expression
+     * @param int $result
+     * @return void
+     */
+    public function trackUsersCalculation(string $expression, int|string $result): void
+    {
+        $user = $this->getAuthenticatedUser();
+        $user->calculations()->create([
+            'expression' => $expression,
+            'result' => $result,
+        ]);
     }
 }

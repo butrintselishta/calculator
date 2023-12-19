@@ -28,6 +28,7 @@
 <script>
 import axios from 'axios';
 import ApiClient from '../Services/ApiClient';
+import { removeAuthToken } from '../helpers/authHelper';
 
 export default {
     name: 'Calculator',
@@ -74,11 +75,15 @@ export default {
         async calculateResult() {
             try {
                 const { data, status } = await ApiClient.PostCalculation(this.displayValue)
+                console.log(status, 'sss')
                 if (status === 200) {
-                    console.log(data.data);
                     this.displayValue = data.data;
                 }
             } catch (error) {
+                if (error.response?.status === 401) {
+                    removeAuthToken();
+                    this.$router.push('/login')
+                }
                 this.displayValue = 'N/A';
             }
         },

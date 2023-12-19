@@ -3,11 +3,16 @@
 namespace App\Services\Api;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Number;
 use SplStack;
 
 class CalculatorService
 {
+    protected $userService;
+
+    public function __construct(UserService $userService) {
+        $this->userService = $userService;
+    }
+
     /**
      * Calculates the result of a mathematical expression
      * @param string $expression
@@ -16,6 +21,8 @@ class CalculatorService
     public function calculate(string $expression): JsonResponse
     {
         $allValuesInExpression = preg_split('/([\+\-\*\/\(\)])/', $expression, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $result = $this->calculateExpressions($allValuesInExpression);
+        $this->userService->trackUsersCalculation($expression, $result);
         return response()->success($this->calculateExpressions($allValuesInExpression));
     }
 
