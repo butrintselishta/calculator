@@ -45,6 +45,6 @@ class User extends Authenticatable
 
     public function calculations()
     {
-        return $this->hasMany(UserCalculation::class);
+        return $this->hasMany(UserCalculation::class)->orderByDesc('id');
     }
 }

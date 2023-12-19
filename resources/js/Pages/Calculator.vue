@@ -21,57 +21,20 @@
             </div>
         </div>
     </div>
-    <div
-        v-if="loaded"
-        class="flex w-1/2 space-x-10">
-        <div class="max-h-96 relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            User's name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Expresion
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Result
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Created at
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr
-                        v-for="(calculation, i) in user?.calculations"
-                        :key="i"
-                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ user.name }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ calculation.expression }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ calculation.result }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ calculation.created_at }}
-                            </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div v-if="user" class="flex flex-col w-1/2 space-y-4">
+        <Tracker :user="user" :key="user.calculations"></Tracker>
     </div>
 </template>
 <script>
-import axios from 'axios';
 import ApiClient from '../Services/ApiClient';
 import { removeAuthToken } from '../helpers/authHelper';
+import Tracker from './Tracker.vue';
 
 export default {
     name: 'Calculator',
+    components: {
+        Tracker,
+    },
     data() {
         return {
             loaded: false,
@@ -121,9 +84,9 @@ export default {
         async calculateResult() {
             try {
                 const { data, status } = await ApiClient.PostCalculation(this.displayValue)
-                console.log(status, 'sss')
                 if (status === 200) {
                     this.displayValue = data.data;
+                    await this.getUsersData();
                 }
             } catch (error) {
                 if (error.response?.status === 401) {
