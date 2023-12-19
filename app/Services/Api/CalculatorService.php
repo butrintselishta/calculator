@@ -20,10 +20,14 @@ class CalculatorService
      */
     public function calculate(string $expression): JsonResponse
     {
-        $allValuesInExpression = preg_split('/([\+\-\*\/\(\)])/', $expression, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        $result = $this->calculateExpressions($allValuesInExpression);
-        $this->userService->trackUsersCalculation($expression, $result);
-        return response()->success($result);
+        try {
+            $allValuesInExpression = preg_split('/([\+\-\*\/\(\)])/', $expression, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+            $result = $this->calculateExpressions($allValuesInExpression);
+            $this->userService->trackUsersCalculation($expression, $result);
+            return response()->success($result);
+        } catch (\Throwable $th) {
+            return response()->error('N/A', 500);
+        }
     }
 
     /**
@@ -67,37 +71,35 @@ class CalculatorService
         }
         $values = array_reverse($values);
 
-        $result = $this->calculateNumbers($values);
-
-        return $result;
+        return $this->calculateNumbers($values);
     }
 
     /**
      * Calculates the result of an array of values and operators based on the order of operations.
-     * @param array $numbers
+     * @param array $chars
      * @return int
      */
-    public function calculateNumbers(array $numbers): int
+    public function calculateNumbers(array $chars): int
     {
         $result = 0;
         $currentOperator = '+';
 
-        foreach ($numbers as $number) {
-            if (in_array($number, ['+', '-', '*', '/'])) {
-                $currentOperator = $number;
+        foreach ($chars as $char) {
+            if (in_array($char, ['+', '-', '*', '/'])) {
+                $currentOperator = $char;
             } else {
                 switch ($currentOperator) {
                     case '+':
-                        $result += $number;
+                        $result += $char;
                         break;
                     case '-':
-                        $result -= $number;
+                        $result -= $char;
                         break;
                     case '*':
-                        $result *= $number;
+                        $result *= $char;
                         break;
                     case '/':
-                        $result = ($number != 0) ? $result / $number : 'N/A';
+                        $result = ($char != 0) ? $result / $char : 'N/A';
                         break;
                 }
             }
