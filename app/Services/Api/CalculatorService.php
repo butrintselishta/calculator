@@ -23,7 +23,7 @@ class CalculatorService
         $allValuesInExpression = preg_split('/([\+\-\*\/\(\)])/', $expression, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         $result = $this->calculateExpressions($allValuesInExpression);
         $this->userService->trackUsersCalculation($expression, $result);
-        return response()->success($this->calculateExpressions($allValuesInExpression));
+        return response()->success($result);
     }
 
     /**

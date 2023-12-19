@@ -11,6 +11,11 @@ export default {
         };
     },
 
+    async getUsersData() {
+        const httpHeaders = this.defaultHeaders();
+        return axios.get(this.endpoint(`user`),  { headers: httpHeaders });
+    },
+
     async PostCalculation(expression) {
         const httpHeaders = this.defaultHeaders();
         return axios.post(this.endpoint(`calculate`), { expression: expression },

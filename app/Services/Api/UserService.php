@@ -3,8 +3,10 @@
 namespace App\Services\Api;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Spatie\FlareClient\Http\Exceptions\NotFound;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -12,11 +14,16 @@ class UserService
 {
     /**
      * Get authenticated user
-     * @return User
+     * @return Model
      */
-    private function getAuthenticatedUser(): User
+    public function getAuthenticatedUser(): Model
     {
-        return auth()->user();
+        $user = User::with('calculations')->find(auth()->id());
+        if(!$user) {
+            return response()->error('User not found', Response::HTTP_NOT_FOUND);
+        }
+
+        return $user;
     }
 
     /**
