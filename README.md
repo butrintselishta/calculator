@@ -90,3 +90,16 @@ Initiate your development server by running the following command in your termin
 php artisan serve
 ```
 This command sets up the server and provides a convenient way to access your application for testing and development.
+
+<br/>
+9. Build Frontend Assets:
+
+Run the following command to compile your assets:
+```bash
+npm run dev
+```
+
+<br/>
+10. Open the web app
+
+Navigate to the URL served by php artisan serve, typically located at http://127.0.0.1:{PORT}.
