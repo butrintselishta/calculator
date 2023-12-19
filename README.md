@@ -83,7 +83,16 @@ php artisan migrate
 ```
 
 <br/>
-8. Start the Development Server:
+
+8. Run database seeders to create the admin
+Run the following command to create the default user
+```bash
+php artisan db:seed
+```
+
+<br/>
+
+9. Start the Development Server:
 
 Initiate your development server by running the following command in your terminal:
 ```bash
@@ -92,7 +101,8 @@ php artisan serve
 This command sets up the server and provides a convenient way to access your application for testing and development.
 
 <br/>
-9. Build Frontend Assets:
+
+10. Build Frontend Assets:
 
 Run the following command to compile your assets:
 ```bash
@@ -100,6 +110,16 @@ npm run dev
 ```
 
 <br/>
-10. Open the web app
+
+11. Open the web app
 
 Navigate to the URL served by php artisan serve, typically located at http://127.0.0.1:{PORT}.
+
+<br/>
+
+11. Log in by using the defaults user credentials
+
+```bash
+email: admin@gmail.com
+password: 1234
+```

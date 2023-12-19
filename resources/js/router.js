@@ -3,7 +3,7 @@ import Login from './pages/Login.vue';
 import Calculator from './pages/Calculator.vue';
 
 const routes = [
-  { path: '/login', component: Login },
+  { path: '/', component: Login },
   { path: '/calculator', component: Calculator, name: 'calculator', meta: { requiresAuth: true } },
 ];
 
@@ -16,7 +16,7 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('authToken');
     if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (!token) {
-        next('/login');
+        next('/');
       } else {
         next();
       }
